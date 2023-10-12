@@ -32,6 +32,7 @@ with st.sidebar:
         # get pdf text
             raw_text = get_pdf_text(pdf_docs)
             # st.write(raw_text)
+            
         # get text chunks
             text_chunks = get_text_chunks(raw_text)
             st.write(text_chunks)
