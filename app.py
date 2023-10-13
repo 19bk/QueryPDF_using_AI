@@ -1,5 +1,6 @@
 import streamlit as st
 from dotenv import load_dotenv
+
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
@@ -9,14 +10,6 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 # from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
-
-# import os
-
-# # Print all environment variables
-# for key, value in os.environ.items():
-#     print(key, value)  # Remember to remove this after checking
-
-
 
 st.set_page_config(page_title="Chat with your PDFs", page_icon=":books:")
 
@@ -38,6 +31,7 @@ def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings()
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)  # Corrected FAISS usage
     return vectorstore
+
 
 
 def main():
