@@ -41,6 +41,7 @@ def get_vectorstore(text_chunks):
 
 
 def main():
+    
     load_dotenv()
     st.header("Chat with your PDFs :books:")
     st.text_input("Ask a question about your PDFs:")
