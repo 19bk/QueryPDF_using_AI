@@ -1,7 +1,7 @@
 # PDF Query Chatbot with LangChain and Streamlit
 
 ## Overview
-This project is a sophisticated chatbot application powered by LangChain and Streamlit, designed to answer questions based on the content of uploaded PDF documents. By leveraging the power of advanced embeddings and the LangChain framework, the chatbot provides accurate, context-aware responses, making it a valuable tool for extracting insights from PDFs interactively.
+This project is a chatbot application powered by LangChain and Streamlit, designed to answer questions based on the content of uploaded PDF documents. By leveraging the power of advanced embeddings and the LangChain framework, the chatbot provides accurate, context-aware responses, making it a valuable tool for extracting insights from PDFs interactively.
 
 ## Features
 - **PDF Upload**: Users can upload multiple PDFs to the application.
