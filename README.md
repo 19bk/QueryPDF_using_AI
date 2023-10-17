@@ -1,4 +1,3 @@
-```markdown
 # PDF Query Chatbot with LangChain and Streamlit
 
 ## Overview
