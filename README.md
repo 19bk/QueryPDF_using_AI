@@ -41,8 +41,3 @@ This PDF Query Chatbot demonstrates the integration of Streamlit with the LangCh
 
 ## License
 This project is open source and available under the MIT License.
-```
-
-### Note:
-- Make sure to replace `"static/pdfelphant.png"` with the actual relative path to the screenshot in your project directory if it's different.
-- Ensure that the image file is included when you push your code to the remote repository, so it's accessible when viewing the README on platforms like GitHub.
