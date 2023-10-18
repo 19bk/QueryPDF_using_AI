@@ -35,6 +35,8 @@ Open a web browser and navigate to [http://localhost:8501](http://localhost:8501
 
 ## Screenshots
 ![Screenshot of the application](static/pdfelphant.png)
+![Screenshot of the code
+](static/code.png)
 
 ## Conclusion
 This PDF Query Chatbot demonstrates the integration of Streamlit with the LangChain framework, showcasing an advanced implementation of conversational AI that is data-aware and context-sensitive. The application stands as an example of how AI, machine learning embeddings, and modern frameworks can come together to deliver interactive and dynamic user experiences.
