@@ -106,6 +106,7 @@ Open <http://localhost:8501> and start asking your documents questions.
 QueryPDF_using_AI/
 ├── src/              # Application source
 ├── static/           # README screenshots
+├── demo/             # VHS terminal demo (.tape -> GIF)
 ├── Dockerfile        # Container build
 ├── requirements.txt  # Python dependencies
 ├── .env.example      # Environment template
@@ -122,6 +123,16 @@ RAG is the right approach when:
 - The data changes too often to fine-tune a model on.
 - You need source citations alongside answers.
 - The model must not invent information that is not in the source material.
+
+---
+
+## Terminal quick-start (recorded)
+
+<p align="center">
+  <img src="demo/quickstart.gif" alt="QueryPDF terminal quick-start" width="85%"/>
+</p>
+
+> The GIF above is regenerated from [`demo/quickstart.tape`](demo/quickstart.tape) using [VHS](https://github.com/charmbracelet/vhs). See [`demo/README.md`](demo/README.md) for instructions.
 
 ---
 
