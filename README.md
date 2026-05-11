@@ -126,7 +126,7 @@ RAG is the right approach when:
 
 ---
 
-## Terminal quick-start (recorded)
+## Terminal quick-start
 
 <p align="center">
   <img src="demo/quickstart.gif" alt="QueryPDF terminal quick-start" width="85%"/>
