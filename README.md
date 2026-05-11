@@ -1,45 +1,83 @@
-# PDF Query Chatbot with LangChain and Streamlit
+# QueryPDF — Chat with your PDFs
 
-## Overview
-This project is a chatbot application powered by LangChain and Streamlit, designed to answer questions based on the content of uploaded PDF documents. By leveraging the power of advanced embeddings and the LangChain framework, the chatbot provides accurate, context-aware responses, making it a valuable tool for extracting insights from PDFs interactively.
+A RAG (Retrieval-Augmented Generation) chatbot that answers questions from your own PDF documents. Upload a file, ask anything, get a grounded answer based on the document's actual contents, not the model's training data.
 
-## Features
-- **PDF Upload**: Users can upload multiple PDFs to the application.
-- **Text Extraction**: Extracts and processes text from the uploaded PDFs.
-- **Interactive Chatbot**: Users can interact with the chatbot to ask questions related to the PDF content.
-- **LangChain Integration**: Utilizes LangChain for advanced, data-aware, and context-rich conversations.
-- **Embeddings**: Employs OpenAI embeddings for text representation and similarity computations.
+Built with LangChain, OpenAI Embeddings, FAISS, and Streamlit. Docker-deployed.
 
-## Technologies Used
-- **Streamlit**: For creating an interactive and user-friendly web application.
-- **LangChain**: A framework that enables the development of data-aware conversational AI.
-- **OpenAI Embeddings**: Used for converting text into numerical vectors for efficient processing and similarity computations.
-- **FAISS**: A library for efficient similarity search and clustering of dense vectors.
+![Screenshot of the application](static/pdfelphant.png)
 
-## How It Works
-1. **Uploading PDFs**: Users upload PDF documents to the application. The text content is then extracted and processed.
-2. **Text Chunking**: The extracted text is divided into manageable chunks using LangChain’s CharacterTextSplitter.
-3. **Vector Store Creation**: Text chunks are converted into embeddings using OpenAI Embeddings and stored in a FAISS vector store for efficient retrieval.
-4. **Conversational AI**: LangChain integrates a language model, vector store, and memory buffer to create a conversation chain capable of generating context-aware responses.
-5. **User Interaction**: Users can ask questions, and the chatbot retrieves relevant information from the PDF content to generate appropriate responses.
+## Why it exists
 
-## Installation and Running
-Ensure you have Docker installed. Clone the repository and navigate to the project directory. Build and run the Docker container using the following commands:
+Most AI assistants are "well-read strangers." They know the internet, not your data. QueryPDF demonstrates the pattern that fixes this: ground the LLM in the user's own documents through retrieval-augmented generation, so answers come from the source material rather than the model's training data.
 
-```sh
+## How it works
+
+1. **Upload PDFs.** The app extracts text from each file.
+2. **Chunk and embed.** Text is split into chunks with `CharacterTextSplitter`, then each chunk is converted to a vector with OpenAI Embeddings.
+3. **Index in FAISS.** Vectors go into a local FAISS index for fast similarity search.
+4. **Query.** When you ask a question, it's embedded, FAISS returns the top-k most relevant chunks, and those chunks are passed to the LLM as context.
+5. **Answer.** The LLM responds using only the retrieved context. Conversation memory keeps follow-up questions coherent.
+
+## Tech stack
+
+| Layer | Tool |
+|---|---|
+| UI | Streamlit |
+| Orchestration | LangChain |
+| Embeddings | OpenAI `text-embedding-ada-002` (or current default) |
+| Vector store | FAISS (local, in-memory) |
+| Container | Docker |
+
+## Quick start
+
+Requires Docker and an OpenAI API key.
+
+```bash
+# 1. Clone
+git clone https://github.com/19bk/QueryPDF_using_AI.git
+cd QueryPDF_using_AI
+
+# 2. Set your API key
+cp .env.example .env
+# Edit .env and set OPENAI_API_KEY
+
+# 3. Build and run
 docker build -t pdf-query-chatbot .
-docker run -p 8501:8501 pdf-query-chatbot
+docker run --env-file .env -p 8501:8501 pdf-query-chatbot
 ```
 
-Open a web browser and navigate to [http://localhost:8501](http://localhost:8501) to interact with the application.
+Open [http://localhost:8501](http://localhost:8501).
+
+## Project structure
+
+```
+QueryPDF_using_AI/
+├── src/              # Application source
+├── static/           # README screenshots
+├── Dockerfile        # Container build
+├── requirements.txt  # Python dependencies
+├── .env.example      # Environment template
+└── README.md
+```
 
 ## Screenshots
-![Screenshot of the application](static/pdfelphant.png)
-![Screenshot of the code
-](static/code.png)
 
-## Conclusion
-This PDF Query Chatbot demonstrates the integration of Streamlit with the LangChain framework, showcasing an advanced implementation of conversational AI that is data-aware and context-sensitive. The application stands as an example of how AI, machine learning embeddings, and modern frameworks can come together to deliver interactive and dynamic user experiences.
+![Code preview](static/code.png)
+
+## When to use this pattern
+
+RAG is the right approach when:
+
+- The answers need to come from documents you control (policies, manuals, SOPs, contracts).
+- The data changes too often to fine-tune a model on.
+- You need source citations alongside answers.
+- The model must not invent information that is not in the source material.
 
 ## License
-This project is open source and available under the MIT License.
+
+MIT.
+
+## Author
+
+Bernard Kibathi — AI & Automation Engineer
+[GitHub](https://github.com/19bk) · [Dev.to](https://dev.to/bernardkibathi) · [LinkedIn](https://linkedin.com/in/bernard-kibathi)

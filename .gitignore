@@ -1,3 +1,22 @@
-venv
-.env
+
+# Environment
+# IDE
+# OS
+# Python
+# Streamlit
+*.egg-info/
+*.py[cod]
+*.so
+*.swp
+.DS_Store
+.Python
 .__pycache__
+.env
+.idea/
+.streamlit/secrets.toml
+.venv/
+.vscode/
+Thumbs.db
+__pycache__/
+venv
+venv/
