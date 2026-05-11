@@ -3,7 +3,7 @@
   https://capsule-render.vercel.app/api
 -->
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=200&section=header&text=QueryPDF&fontSize=70&fontAlignY=38&desc=Chat%20with%20your%20PDFs%20using%20RAG&descAlignY=60&descSize=18&animation=fadeIn" alt="QueryPDF banner"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=200&section=header&text=QueryPDF&fontSize=70&fontAlignY=38&desc=Turn%20your%20company%20knowledge%20base%20into%20an%20AI%20you%20can%20ask&descAlignY=60&descSize=16&animation=fadeIn" alt="QueryPDF banner"/>
 </p>
 
 <p align="center">
@@ -18,8 +18,8 @@
 </p>
 
 <p align="center">
-  <b>A RAG chatbot that answers questions from your own PDFs.</b><br/>
-  Upload a file, ask anything, get a grounded answer based on the document, not the model's training data.
+  <b>An AI that knows your company's documents.</b><br/>
+  Point it at your SOPs, policies, contracts, and playbooks. Ask anything. Get grounded answers from the source, with citations.
 </p>
 
 <p align="center">
@@ -30,8 +30,27 @@
 
 ## Why it exists
 
-Most AI assistants are *well-read strangers*. They know the internet, not your data.
-QueryPDF demonstrates the pattern that fixes this: **ground the LLM in the user's own documents through retrieval-augmented generation**, so answers come from the source material rather than the model's training data.
+Generic AI is a *well-read stranger*. It knows the internet, not your company.
+
+Every team has the same problem: critical knowledge sits in PDFs, wikis, contracts, and onboarding decks that no one has time to read. New hires ask their managers the same questions every quarter. Sales reps quote the wrong pricing. Support escalates issues that are already answered in the runbook.
+
+QueryPDF demonstrates the pattern that fixes this: **ground an LLM in the company's own knowledge base** so answers come from the source material, not the model's training data.
+
+Build it once, and the AI behaves like a colleague who has read everything your company has ever written.
+
+---
+
+## Use cases
+
+| Department | The question | The source |
+|---|---|---|
+| Customer support | "What's our refund policy for enterprise plans?" | Terms of service, contract templates |
+| Sales | "Has this prospect's industry been in our case studies?" | Case study library |
+| Onboarding | "How do I request access to the production database?" | Internal runbooks, IT policies |
+| Operations | "What's the procedure when a kiosk fails commissioning?" | Field SOPs |
+| Legal / compliance | "What's our policy on data residency in the EU?" | Compliance handbook |
+
+Same pattern, different documents.
 
 ---
 
@@ -39,12 +58,12 @@ QueryPDF demonstrates the pattern that fixes this: **ground the LLM in the user'
 
 ```mermaid
 flowchart LR
-    A[Your PDFs] -->|extract text| B[Chunk text]
+    A[Company<br/>knowledge base] -->|extract text| B[Chunk text]
     B -->|OpenAI Embeddings| C[(FAISS<br/>vector store)]
     D[Your question] -->|embed| E[Similarity search]
     C --> E
     E -->|top-k chunks| F[LLM with context]
-    F --> G[Grounded answer]
+    F --> G[Grounded answer<br/>with citations]
 
     classDef src fill:#a5d8ff,stroke:#4a9eed,color:#000
     classDef proc fill:#d0bfff,stroke:#8b5cf6,color:#000
@@ -58,10 +77,10 @@ flowchart LR
 
 **The flow:**
 
-1. **Upload PDFs.** The app extracts text from each file.
-2. **Chunk and embed.** Text is split with `CharacterTextSplitter`, then each chunk is converted to a vector with OpenAI Embeddings.
+1. **Ingest the knowledge base.** The app extracts text from your documents (PDFs in this reference build; the same pattern works for Notion exports, Confluence dumps, contract folders).
+2. **Chunk and embed.** Text is split into manageable chunks, then each chunk is converted to a vector with OpenAI Embeddings.
 3. **Index in FAISS.** Vectors go into a local FAISS index for fast similarity search.
-4. **Query.** A question is embedded, FAISS returns the top-k most relevant chunks, and those chunks become context for the LLM.
+4. **Query.** A user's question is embedded, FAISS returns the top-k most relevant chunks, and those chunks become context for the LLM.
 5. **Answer.** The LLM responds using only the retrieved context. Conversation memory keeps follow-ups coherent.
 
 ---
@@ -92,11 +111,21 @@ cp .env.example .env
 # Edit .env and set OPENAI_API_KEY
 
 # 3. Build and run
-docker build -t pdf-query-chatbot .
-docker run --env-file .env -p 8501:8501 pdf-query-chatbot
+docker build -t querypdf .
+docker run --env-file .env -p 8501:8501 querypdf
 ```
 
-Open <http://localhost:8501> and start asking your documents questions.
+Open <http://localhost:8501>, upload your documents, and start asking questions.
+
+---
+
+## Terminal quick-start
+
+<p align="center">
+  <img src="demo/quickstart.gif" alt="QueryPDF terminal quick-start" width="85%"/>
+</p>
+
+> The GIF is regenerated from [`demo/quickstart.tape`](demo/quickstart.tape) using [VHS](https://github.com/charmbracelet/vhs). See [`demo/README.md`](demo/README.md) for details.
 
 ---
 
@@ -117,22 +146,13 @@ QueryPDF_using_AI/
 
 ## When to use this pattern
 
-RAG is the right approach when:
+RAG over a company knowledge base is the right approach when:
 
-- The answers need to come from documents you control (policies, manuals, SOPs, contracts).
-- The data changes too often to fine-tune a model on.
-- You need source citations alongside answers.
-- The model must not invent information that is not in the source material.
-
----
-
-## Terminal quick-start
-
-<p align="center">
-  <img src="demo/quickstart.gif" alt="QueryPDF terminal quick-start" width="85%"/>
-</p>
-
-> The GIF above is regenerated from [`demo/quickstart.tape`](demo/quickstart.tape) using [VHS](https://github.com/charmbracelet/vhs). See [`demo/README.md`](demo/README.md) for instructions.
+- The answers must come from documents the company controls (policies, manuals, SOPs, contracts).
+- The knowledge base changes often — too often to fine-tune a model against.
+- Users need citations they can verify.
+- The AI must not invent information that is not in the source material.
+- The team wants to scale knowledge access without scaling headcount.
 
 ---
 
